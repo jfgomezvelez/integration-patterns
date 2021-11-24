@@ -17,5 +17,5 @@ public class Process {
     private final String name;
     private final String traceabilityIdentifier;
     private final String feature;
-
+    private final int dataSize;
 }

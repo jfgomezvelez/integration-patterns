@@ -19,4 +19,5 @@ public class ProcessData {
     private String name;
     private String traceabilityIdentifier;
     private String feature;
+    private int dataSize;
 }

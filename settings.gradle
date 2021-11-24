@@ -14,3 +14,5 @@ include ':async-event-bus'
 project(':async-event-bus').projectDir = file('./infrastructure/driven-adapters/async-event-bus')
 include ':async-event-handler'
 project(':async-event-handler').projectDir = file('./infrastructure/entry-points/async-event-handler')
+include ':json'
+project(':json').projectDir = file('./infrastructure/helpers/json')

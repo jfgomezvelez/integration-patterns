@@ -1,5 +1,6 @@
 package co.edu.eafit.usecase;
 
+import co.edu.eafit.model.common.Transformer;
 import co.edu.eafit.model.statistic.FeatureType;
 import co.edu.eafit.model.statistic.Process;
 import co.edu.eafit.model.statistic.ProcessType;
@@ -17,6 +18,7 @@ public class RequestWeatherUseCase {
 
     private final WeatherRepository weatherRepository;
     private final StatisticRepository statisticRepository;
+    private final Transformer transformer;
 
     public Mono<Void> requestWeather(String location) {
 
@@ -25,7 +27,7 @@ public class RequestWeatherUseCase {
                 .id(UUID.randomUUID().toString())
                 .traceabilityIdentifier(UUID.randomUUID().toString())
                 .name(ProcessType.CHECKWEATHER.toString())
-                .feature(FeatureType.ONLYHTTP.toString())
+                .feature(FeatureType.COMMAND.toString())
                 .build();
 
         return weatherRepository.requestWether(location)
@@ -33,6 +35,7 @@ public class RequestWeatherUseCase {
                     Process processFinish = processInitial
                             .toBuilder()
                             .finishDate(LocalTime.now())
+                            .dataSize(transformer.toJson(weather).length())
                             .build();
                     return statisticRepository.save(processFinish).map(result -> weather);
                 });

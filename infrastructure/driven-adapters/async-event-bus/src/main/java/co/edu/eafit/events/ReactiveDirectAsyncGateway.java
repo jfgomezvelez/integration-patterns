@@ -1,14 +1,17 @@
 package co.edu.eafit.events;
 
+import co.edu.eafit.events.dto.WeatherDTO;
 import co.edu.eafit.model.weather.Weather;
 import co.edu.eafit.model.weather.gateway.WeatherRepository;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.java.Log;
 import org.reactivecommons.api.domain.Command;
 import org.reactivecommons.async.api.AsyncQuery;
 import org.reactivecommons.async.api.DirectAsyncGateway;
 import org.reactivecommons.async.impl.config.annotations.EnableDirectAsyncGateway;
 import reactor.core.publisher.Mono;
+import org.reactivecommons.utils.ObjectMapper;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -25,12 +28,19 @@ public class ReactiveDirectAsyncGateway implements WeatherRepository {
 
     private final DirectAsyncGateway gateway;
 
+    private final ObjectMapper mapper;
+
 
     @Override
     public Mono<Weather> checkWeather(String location) {
         log.log(Level.INFO, "Sending query request: {0}: {1}", new String[]{SOME_QUERY_NAME, location});
-        AsyncQuery query = new AsyncQuery<>(SOME_QUERY_NAME, location);
-        return gateway.requestReply(query, TARGET_NAME, Weather.class);
+        WeatherQuery weatherQuery = new WeatherQuery();
+        weatherQuery.setLocation(location);
+        AsyncQuery query = new AsyncQuery<>(SOME_QUERY_NAME, weatherQuery);
+
+        return gateway
+                .requestReply(query, TARGET_NAME, WeatherDTO.class)
+                .map(weatherDTO -> Converter.toDomain((WeatherDTO) weatherDTO));
     }
 
     @Override

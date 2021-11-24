@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
 spring:
   application:
     name: "weather-processing"
@@ -14,3 +14,5 @@ spring:
   data:
     mongodb:
       uri:  ${MONGO_URL}
+azure:
+  connection-string: ${SB_URL}

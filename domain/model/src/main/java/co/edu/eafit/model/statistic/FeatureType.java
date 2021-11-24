@@ -2,7 +2,9 @@ package co.edu.eafit.model.statistic;
 
 public enum FeatureType {
 
-    ONLYHTTP("OnlyHTTP");
+    ONLYHTTP("OnlyHTTP"),
+    REQUEST_REPLAY("Request_Replay"),
+    COMMAND("Command");
 
     private final String type;
 

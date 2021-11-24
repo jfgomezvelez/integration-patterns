@@ -2,11 +2,11 @@ package co.edu.eafit.events.handlers;
 
 import lombok.AllArgsConstructor;
 import org.reactivecommons.api.domain.DomainEvent;
-import org.reactivecommons.async.impl.config.annotations.EnableEventListeners;
+//import org.reactivecommons.async.impl.config.annotations.EnableEventListeners;
 import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
-@EnableEventListeners
+//@EnableEventListeners
 public class EventsHandler {
 //    private final SampleUseCase sampleUseCase;
 
