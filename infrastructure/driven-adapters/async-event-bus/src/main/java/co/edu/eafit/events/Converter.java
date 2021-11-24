@@ -66,9 +66,9 @@ public class Converter {
 
     private static Stations toDomain(StationsDTO stationsDTO) {
         return Stations.builder()
-                .F0688(toDomain(stationsDTO.getF0688()))
-                .SKMD(toDomain(stationsDTO.getSKMD()))
-                .SKRG(toDomain(stationsDTO.getSKRG()))
+                .F0688(stationsDTO.getF0688() == null ? null : toDomain(stationsDTO.getF0688()))
+                .SKMD(stationsDTO.getSKMD() == null ? null : toDomain(stationsDTO.getSKMD()))
+                .SKRG(stationsDTO.getSKRG() == null ? null :toDomain(stationsDTO.getSKRG()))
                 .build();
     }
 
