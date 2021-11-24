@@ -1,5 +1,7 @@
 package co.edu.eafit.events;
 
+import co.edu.eafit.model.weather.Weather;
+import co.edu.eafit.model.weather.gateway.WeatherRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.reactivecommons.api.domain.Command;
@@ -14,21 +16,27 @@ import java.util.logging.Level;
 @Log
 @AllArgsConstructor
 @EnableDirectAsyncGateway
-public class ReactiveDirectAsyncGateway /*implements SomeGatewayFromDomain*/ {
-    public static final String TARGET_NAME = "cleanArchitecture";// refers to remote spring.application.name property
-    public static final String SOME_COMMAND_NAME = "some.command.name";
-    public static final String SOME_QUERY_NAME = "some.query.name";
+public class ReactiveDirectAsyncGateway implements WeatherRepository {
+
+    public static final String TARGET_NAME = "weather-service";
+
+    public static final String SOME_COMMAND_NAME = "weather.request";
+    public static final String SOME_QUERY_NAME = "weather.query";
+
     private final DirectAsyncGateway gateway;
 
 
-    public Mono<Void> runRemoteJob(Object command/*change for proper model*/) {
-        log.log(Level.INFO, "Sending command: {0}: {1}", new String[]{SOME_COMMAND_NAME, command.toString()});
-        return gateway.sendCommand(new Command<>(SOME_COMMAND_NAME, UUID.randomUUID().toString(), command),
-                TARGET_NAME);
+    @Override
+    public Mono<Weather> checkWeather(String location) {
+        log.log(Level.INFO, "Sending query request: {0}: {1}", new String[]{SOME_QUERY_NAME, location});
+        AsyncQuery query = new AsyncQuery<>(SOME_QUERY_NAME, location);
+        return gateway.requestReply(query, TARGET_NAME, Weather.class);
     }
 
-    public Mono<Object> requestForRemoteData(Object query/*change for proper model*/) {
-        log.log(Level.INFO, "Sending query request: {0}: {1}", new String[]{SOME_QUERY_NAME, query.toString()});
-        return gateway.requestReply(new AsyncQuery<>(SOME_QUERY_NAME, query), TARGET_NAME, Object.class/*change for proper model*/);
+    @Override
+    public Mono<Void> requestWether(String location) {
+        log.log(Level.INFO, "Sending command: {0}: {1}", new String[]{SOME_COMMAND_NAME, location});
+        return gateway.sendCommand(new Command<>(SOME_COMMAND_NAME, UUID.randomUUID().toString(), location),
+                TARGET_NAME);
     }
 }

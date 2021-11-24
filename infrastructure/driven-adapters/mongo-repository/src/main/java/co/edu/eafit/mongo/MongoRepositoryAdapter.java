@@ -1,13 +1,13 @@
 package co.edu.eafit.mongo;
 
+import co.edu.eafit.model.statistic.gateway.StatisticRepository;
+import co.edu.eafit.model.statistic.Process;
 import co.edu.eafit.mongo.helper.AdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MongoRepositoryAdapter extends AdapterOperations<Object/* change for domain model */, Object/* change for adapter model */, String, MongoDBRepository>
-// implements ModelRepository from domain
+public class MongoRepositoryAdapter extends AdapterOperations<Process, ProcessData, String, MongoDBRepository> implements StatisticRepository
 {
 
     public MongoRepositoryAdapter(MongoDBRepository repository, ObjectMapper mapper) {
@@ -16,6 +16,7 @@ public class MongoRepositoryAdapter extends AdapterOperations<Object/* change fo
          *  super(repository, mapper, d -> mapper.mapBuilder(d,ObjectModel.ObjectModelBuilder.class).build());
          *  Or using mapper.map with the class of the object model
          */
-        super(repository, mapper, d -> mapper.map(d, Object.class/* change for domain model */));
+        super(repository, mapper, d -> mapper.mapBuilder(d, Process.ProcessBuilder.class).build());
     }
+
 }

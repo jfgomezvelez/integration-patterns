@@ -13,4 +13,4 @@ spring:
     include: null
   data:
     mongodb:
-      uri: "mongodb://localhost:27017/test"
+      uri:  ${MONGO_URL}
