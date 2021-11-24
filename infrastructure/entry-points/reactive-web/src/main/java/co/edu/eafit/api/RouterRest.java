@@ -11,10 +11,10 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 
 @Configuration
 public class RouterRest {
-@Bean
-public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-    return route(GET("/api/usecase/path"), handler::listenGETUseCase)
-    .andRoute(POST("/api/usecase/otherpath"), handler::listenPOSTUseCase).and(route(GET("/api/otherusercase/path"), handler::listenGETOtherUseCase));
+    @Bean
+    public RouterFunction<ServerResponse> routerFunction(Handler handler) {
+        return route(GET("/api/weather/{location}"), handler::checkWeather)
+                .andRoute(POST("/api/weather/{location}"), handler::requestWeather);
 
     }
 }
