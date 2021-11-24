@@ -5,6 +5,7 @@ import co.edu.eafit.model.statistic.Process;
 import co.edu.eafit.mongo.helper.AdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
 @Repository
 public class MongoRepositoryAdapter extends AdapterOperations<Process, ProcessData, String, MongoDBRepository> implements StatisticRepository
@@ -18,5 +19,4 @@ public class MongoRepositoryAdapter extends AdapterOperations<Process, ProcessDa
          */
         super(repository, mapper, d -> mapper.mapBuilder(d, Process.ProcessBuilder.class).build());
     }
-
 }

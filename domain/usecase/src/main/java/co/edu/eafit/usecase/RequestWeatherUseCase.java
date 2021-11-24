@@ -30,18 +30,21 @@ public class RequestWeatherUseCase {
                 .feature(FeatureType.COMMAND.toString())
                 .build();
 
-        return weatherRepository.requestWether(location)
-                .flatMap(weather -> {
-                    Process processFinish = processInitial
+
+        return statisticRepository.save(processInitial).flatMap(result -> weatherRepository.requestWether(location, processInitial.getId()));
+    }
+
+    public Mono<Void> processWeather(Weather weather, String processId) {
+
+        return statisticRepository.findById(processId)
+                .flatMap(process -> {
+                    Process processFinish = process
                             .toBuilder()
                             .finishDate(LocalTime.now())
                             .dataSize(transformer.toJson(weather).length())
                             .build();
                     return statisticRepository.save(processFinish).map(result -> weather);
-                });
-    }
+                }).then();
 
-    public Mono<Void> processWeather(Weather weather){
-        return Mono.empty();
     }
 }

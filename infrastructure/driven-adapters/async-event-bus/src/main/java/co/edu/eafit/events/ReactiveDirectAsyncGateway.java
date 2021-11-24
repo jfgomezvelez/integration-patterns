@@ -28,8 +28,6 @@ public class ReactiveDirectAsyncGateway implements WeatherRepository {
 
     private final DirectAsyncGateway gateway;
 
-    private final ObjectMapper mapper;
-
 
     @Override
     public Mono<Weather> checkWeather(String location) {
@@ -44,9 +42,12 @@ public class ReactiveDirectAsyncGateway implements WeatherRepository {
     }
 
     @Override
-    public Mono<Void> requestWether(String location) {
+    public Mono<Void> requestWether(String location, String processId) {
         log.log(Level.INFO, "Sending command: {0}: {1}", new String[]{SOME_COMMAND_NAME, location});
-        return gateway.sendCommand(new Command<>(SOME_COMMAND_NAME, UUID.randomUUID().toString(), location),
+        WeatherCommand weatherCommand = new WeatherCommand();
+        weatherCommand.setLocation(location);
+        weatherCommand.setProcessId(processId);
+        return gateway.sendCommand(new Command<>(SOME_COMMAND_NAME, UUID.randomUUID().toString(), weatherCommand),
                 TARGET_NAME);
     }
 }

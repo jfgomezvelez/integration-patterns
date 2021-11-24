@@ -6,5 +6,5 @@ import reactor.core.publisher.Mono;
 public interface WeatherRepository {
     Mono<Weather> checkWeather(String location);
 
-    Mono<Void> requestWether(String location);
+    Mono<Void> requestWether(String location, String processId);
 }
