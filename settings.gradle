@@ -1,4 +1,4 @@
-rootProject.name = 'weather-processing'
+rootProject.name = 'weather-api'
 
 include ':app-service'
 include ':model'
