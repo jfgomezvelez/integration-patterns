@@ -16,19 +16,7 @@ public class MessageSubscriber {
     }
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(
-            value = "weather.request.queue",
-            arguments = {
-                    @Argument(
-                            name = "x-max-length-bytes",
-                            value = "30000000",
-                            type = "java.lang.Integer"
-                    ),
-                    @Argument(
-                            name = "x-queue-type",
-                            value = "classic",
-                            type = "java.lang.String"
-                    )
-            }
+            value = "weather.request.queue"
     ),
             exchange = @Exchange(value = "weather.request.exchange", type = ExchangeTypes.TOPIC),
             key = "weather.request")
