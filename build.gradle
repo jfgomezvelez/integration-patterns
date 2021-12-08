@@ -14,9 +14,12 @@ repositories {
 
 dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '2.3.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'log4j:log4j:1.2.17'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 test {

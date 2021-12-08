@@ -11,6 +11,11 @@ spring:
       path: "/h2"
   profiles:
     include: null
+  rabbitmq:
+    host: localhost
+    password: guest
+    username: guest
+    virtual_host: /
 #  data:
 #    mongodb:
 #      uri:  ${MONGO_URL}
