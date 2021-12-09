@@ -26,7 +26,7 @@ public class MessagePattern {
     @RabbitListener(bindings = @QueueBinding(value = @Queue(
             value = "weather.request.queue"
     ),
-            exchange = @Exchange(value = "weather.request.exchange", type = ExchangeTypes.TOPIC),
+            exchange = @Exchange(value = "weather.exchange", type = ExchangeTypes.TOPIC),
             key = "weather.request")
     )
     public void receive(Message message, Channel channel) {
@@ -65,7 +65,7 @@ public class MessagePattern {
         messageProperties.setMessageId(messageId);
 
         Message messageToSend = new Message(data, messageProperties);
-        rabbitTemplate.convertAndSend("weather.response.exchange", "weather.response", messageToSend);
+        rabbitTemplate.convertAndSend("weather.exchange", "weather.response", messageToSend);
         return true;
     }
 }
