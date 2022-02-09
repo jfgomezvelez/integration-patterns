@@ -16,6 +16,9 @@ spring:
     password: guest
     username: guest
     virtual_host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
 #  data:
 #    mongodb:
 #      uri:  ${MONGO_URL}
