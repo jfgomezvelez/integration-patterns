@@ -65,9 +65,9 @@ public class MessagePattern {
     public boolean send(String message, String messageId) {
         log.info("Enviando evento "
                 .concat(message)
-                .concat(" a ").concat("weather.response.exchange")
-                .concat(":")
-                .concat("weather.response"));
+                .concat(" a ").concat("weather.service.em.exchange ")
+                .concat(": ")
+                .concat("weather.service.em.queue"));
 
         byte[] data = message.getBytes(StandardCharsets.UTF_8);
 
