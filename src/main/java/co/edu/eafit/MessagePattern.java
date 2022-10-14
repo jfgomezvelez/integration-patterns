@@ -28,7 +28,7 @@ public class MessagePattern {
     @Value("${spring.rabbitmq.listener.simple.acknowledge-mode}")
     private String mode;
 
-    @RabbitListener(queues = "weather.api.em.queue", concurrency = "${process.concurrency}")
+    @RabbitListener(queues = "weather.api.cm.queue", concurrency = "${process.concurrency}")
     public void receive(Message message, Channel channel) {
 
         log.info("Recibiendo mensaje ".concat(new String(message.getBody())).concat(" messageId ").concat(message.getMessageProperties().getMessageId()));
@@ -65,9 +65,9 @@ public class MessagePattern {
     public boolean send(String message, String messageId) {
         log.info("Enviando evento "
                 .concat(message)
-                .concat(" a ").concat("weather.service.em.exchange ")
+                .concat(" a ").concat("weather.service.cm.exchange ")
                 .concat(": ")
-                .concat("weather.service.em.queue"));
+                .concat("weather.service.cm.queue"));
 
         byte[] data = message.getBytes(StandardCharsets.UTF_8);
 
@@ -75,7 +75,7 @@ public class MessagePattern {
         messageProperties.setMessageId(messageId);
 
         Message messageToSend = new Message(data, messageProperties);
-        rabbitTemplate.convertAndSend("weather.service.em.exchange ",  messageToSend);
+        rabbitTemplate.convertAndSend("weather.service.cm.exchange ",  messageToSend);
         return true;
     }
 
