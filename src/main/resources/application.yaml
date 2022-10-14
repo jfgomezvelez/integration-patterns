@@ -19,9 +19,6 @@ spring:
     listener:
       simple:
         acknowledge-mode: manual
-#  data:
-#    mongodb:
-#      uri:  ${MONGO_URL}
-#visualcrossing:
-#  url: "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
-#  key: ${VISUAL_KEY}
+        prefetch: 100
+process:
+  concurrency: "1-1"

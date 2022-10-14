@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 
 import java.text.NumberFormat;
 
-//@EnableMongoRepositories
 @SpringBootApplication
 public class MainApplication {
 

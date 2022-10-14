@@ -1,5 +1,6 @@
 package co.edu.eafit;
 
+import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import lombok.extern.java.Log;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -11,6 +12,7 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -23,24 +25,40 @@ public class MessagePattern {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(
-            value = "weather.request.queue"
-    ),
-            exchange = @Exchange(value = "weather.exchange", type = ExchangeTypes.TOPIC),
-            key = "weather.request")
-    )
-    //@RabbitListener(queues = "", concurrency = "1-1")
+    @Value("${spring.rabbitmq.listener.simple.acknowledge-mode}")
+    private String mode;
+
+    @RabbitListener(queues = "weather.api.em.queue", concurrency = "${process.concurrency}")
     public void receive(Message message, Channel channel) {
+
         log.info("Recibiendo mensaje ".concat(new String(message.getBody())).concat(" messageId ").concat(message.getMessageProperties().getMessageId()));
-        boolean result = send(createMessage3(), message.getMessageProperties().getMessageId());
-        try {
-            if (result) {
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            } else {
-                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+
+        co.edu.eafit.Message messageReceive = new Gson().fromJson(new String(message.getBody()), co.edu.eafit.Message.class);
+
+        String messageToSend = "Empty";
+
+        switch (messageReceive.getMessageType())
+        {
+            case 1 : messageToSend = createSmallMessage();
+            break;
+            case 2 : messageToSend = createMediumMessage();
+            break;
+            case 3 : messageToSend = createBigMessage();
+            break;
+        }
+
+        boolean result = send(messageToSend, message.getMessageProperties().getMessageId());
+
+        if("manual".equals(mode)){
+            try {
+                if (result) {
+                    channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                } else {
+                    channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -57,11 +75,11 @@ public class MessagePattern {
         messageProperties.setMessageId(messageId);
 
         Message messageToSend = new Message(data, messageProperties);
-        rabbitTemplate.convertAndSend("weather.exchange", "weather.response", messageToSend);
+        rabbitTemplate.convertAndSend("weather.service.em.exchange ",  messageToSend);
         return true;
     }
 
-    private String createMessage1(){
+    private String createSmallMessage(){
         return "{\n" +
                 "    \"queryCost\": 1,\n" +
                 "    \"latitude\": 6.24589,\n" +
@@ -74,7 +92,7 @@ public class MessagePattern {
                 "}";
     }
 
-    private String createMessage2(){
+    private String createMediumMessage(){
         return "{\n" +
                 "    \"queryCost\": 1,\n" +
                 "    \"latitude\": 6.24589,\n" +
@@ -494,7 +512,7 @@ public class MessagePattern {
                 "}";
     }
 
-    private String createMessage3(){
+    private String createBigMessage(){
         return "{\n" +
                 "    \"queryCost\": 1,\n" +
                 "    \"latitude\": 6.24589,\n" +
