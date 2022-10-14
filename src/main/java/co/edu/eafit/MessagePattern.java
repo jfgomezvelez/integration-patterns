@@ -29,6 +29,7 @@ public class MessagePattern {
             exchange = @Exchange(value = "weather.exchange", type = ExchangeTypes.TOPIC),
             key = "weather.request")
     )
+    //@RabbitListener(queues = "", concurrency = "1-1")
     public void receive(Message message, Channel channel) {
         log.info("Recibiendo mensaje ".concat(new String(message.getBody())).concat(" messageId ").concat(message.getMessageProperties().getMessageId()));
         boolean result = send(createMessage3(), message.getMessageProperties().getMessageId());
