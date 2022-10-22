@@ -75,7 +75,7 @@ public class MessagePattern {
         messageProperties.setMessageId(messageId);
 
         Message messageToSend = new Message(data, messageProperties);
-        rabbitTemplate.convertAndSend("weather.service.em.exchange ",  messageToSend);
+        rabbitTemplate.convertAndSend("weather.service.em.exchange","",  messageToSend);
         return true;
     }
 

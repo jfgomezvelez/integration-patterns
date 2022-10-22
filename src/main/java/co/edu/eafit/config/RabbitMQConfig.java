@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Bean
+    //@Bean
     public SimpleMessageListenerContainer simpleMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
-        container.setPrefetchCount(250);
+        container.setPrefetchCount(100);
         container.setMaxConcurrentConsumers(20);
         container.setConcurrentConsumers(10);
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
