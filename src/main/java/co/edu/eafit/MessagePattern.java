@@ -3,7 +3,6 @@ package co.edu.eafit;
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import lombok.extern.java.Log;
-import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.Exchange;
