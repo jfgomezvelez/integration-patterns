@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 @Log
 @Component
@@ -49,7 +50,7 @@ public class MessagePattern {
 
         boolean result = send(messageToSend, message.getMessageProperties().getMessageId());
 
-        if("manual".equals(mode)){
+        if("manual".toUpperCase(Locale.ROOT).equals(mode.toUpperCase(Locale.ROOT))){
             try {
                 if (result) {
                     channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
